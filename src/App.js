@@ -8,7 +8,7 @@ import LoginBootstrap from '../src/components/LoginBootstrap'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Main>0</Main>,
+    element: <Main></Main>,
     children: [
       {
         path: '/',
