@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth'
 import app from '../Firebase/Firebase.init';
+import { Link } from 'react-router-dom';
 
 
 const auth = getAuth(app);
@@ -10,11 +11,13 @@ const auth = getAuth(app);
 
 const RegisterReactBootstrap = () => {
   const [passwordError, setPasswordError] = useState('');
+  const [success, setSuccess] = useState(false);
 
     const handleRegister = event => {
-        event.preventDefault();
-        const email = event.target.email.value;
-        const password = event.target.password.value;
+      event.preventDefault();
+      const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
       console.log(email, password);
        // validate password
         if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
@@ -34,9 +37,12 @@ const RegisterReactBootstrap = () => {
         .then(result => {
           const user = result.user;
           console.log(user);
+          setSuccess(true);
+          form.reset();
         })
         .catch(error => {
           console.error("error", error);
+          setPasswordError(error.message);
       })
         
         
@@ -55,10 +61,12 @@ const RegisterReactBootstrap = () => {
         <Form.Control type="password" name='password' placeholder="Enter Your Password"  required/>
           </Form.Group>
           <p className='text-danger'>{passwordError}</p>
+          {success && <p className='text-success'>User created successfully</p>}
       <Button variant="primary" type="submit">
         Register
       </Button>
-    </Form>
+        </Form>
+        <p><small>If already have an account, Please <Link to ='/login'>Login</Link></small></p>
         </div>
     );
 };
